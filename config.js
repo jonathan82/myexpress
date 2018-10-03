@@ -1,15 +1,15 @@
 const env = process.env.NODE_ENV;
 
 const dev = {
-    app: {
-        port: 3000
-    }
+    port: parseInt(process.env.PORT) || 3000,
+    awsAccessKey: process.env.AWS_ACCESS_KEY,
+    awsSecretKey: process.env.AWS_SECRET_KEY,
+    awsRegion: process.env.AWS_REGION || 'us-west-1'
 }
 
 const prod = {
-    app: {
-        port: 80
-    }
+    port: parseInt(process.env.PORT) || 80,
+    awsRegion: process.env.AWS_REGION || 'us-west-1'
 }
 
 const config = {
