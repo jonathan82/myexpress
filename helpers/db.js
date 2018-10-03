@@ -12,9 +12,13 @@ const db = new AWS.DynamoDB.DocumentClient();
 module.exports.create = async function (tableName, item) {
     const req = db.put({
         TableName: tableName,
-        Item: item
+        Item: item,
+        ConditionExpression: 'attribute_not_exists(Id)'
     });
 
     return await req.promise();
 }
 
+module.exports.update = async function (tableName, id) {
+    
+}
