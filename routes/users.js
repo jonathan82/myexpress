@@ -1,6 +1,5 @@
 const express = require('express');
 const Joi = require('joi');
-const users = require('../')
 const router = express.Router();
 
 const schema = {

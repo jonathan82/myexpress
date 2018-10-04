@@ -4,8 +4,11 @@ const db = require('../helpers/db');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  db.create('SimbaMainTabl', {Id: 'jon10'});
-  res.send('hello jonathan');
+  db.create('SimbaMainTabl', {Id: 'jon10'}).then(() => {
+    res.send('hello jonathan');
+  }).catch((err) => {
+    next(err);
+  });
 });
 
 module.exports = router;

@@ -9,14 +9,14 @@ AWS.config.update({
 
 const db = new AWS.DynamoDB.DocumentClient();
 
-module.exports.create = async function (tableName, item) {
+module.exports.create = function (tableName, item) {
     const req = db.put({
         TableName: tableName,
         Item: item,
         ConditionExpression: 'attribute_not_exists(Id)'
     });
 
-    return await req.promise();
+    return req.promise();
 }
 
 module.exports.update = async function (tableName, id) {
