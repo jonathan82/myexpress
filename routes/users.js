@@ -8,7 +8,7 @@ const schema = Joi.object().keys({
   email: Joi.string().email().required(),
   phone: Joi.string().length(10).required(),
   password: Joi.string().required().min(6).allow(),
-  profileText: ''  
+  profileText: Joi.string().max(1000)
 });
 
 // Get specific user
