@@ -1,26 +1,27 @@
 const db = require('../helpers/db');
-const Joi = require('joi');
+const crypto = require('crypto');
 
-const schema = Joi.object().keys({
-    username: Joi.string().required().min(3).max(25).token(),
-    email: Joi.string().email().required(),
-    phone: Joi.string().length(10).required(),
-    password: Joi.string().required().min(6),
-    profileText: Joi.string().max(1000)
-});
+module.exports.create = async function (user) {
 
-module.exports.create = function create(un, pwd, em, ph) {
-    // validate user
+    const hashedPwd = crypto.createHash('sha256').update(user.password).digest('hex');
 
-    // make sure username and email doesn't exist
+    await db.create({
+        Id: user.username,
+        Email: user.email,
+        HashedPwd: hashedPwd,
+        Phone: user.phone,
+        VerifiedPhone: false
+    });
+}
 
-    // creat user in db
-    db.create('SimbaMainTable', {
-        Username: un,
-        Email: em,
-        HashedPwd: '',
-        Phone: ph,
-        VerifiedPhone: false,
+module.exports.authenticate = async function(username,password) {
+    const hashedPwd = crypto.createHash('sha256').update(password).digest('hex');
 
-    })   
+    const u = await db.get(username);
+
+    if (u && u.HashedPwd==hashedPwd) {
+        return true;
+    }
+
+    return false;
 }

@@ -7,18 +7,42 @@ AWS.config.update({
     secretAccessKey: config.awsSecretKey
 });
 
-const db = new AWS.DynamoDB.DocumentClient();
+const doc = new AWS.DynamoDB.DocumentClient();
 
-module.exports.create = function (tableName, item) {
-    const req = db.put({
-        TableName: tableName,
+const TABLE_NAME = "SimbaMainTable";
+
+module.exports.create = async function (item) {
+    const req = doc.put({
+        TableName: TABLE_NAME,
         Item: item,
         ConditionExpression: 'attribute_not_exists(Id)'
     });
 
-    return req.promise();
+    await req.promise();
 }
 
-module.exports.update = async function (tableName, id) {
+module.exports.get = async function(id) {
+    const req = doc.get({
+        TableName: TABLE_NAME,
+        Key: {
+            Id: id
+        }
+    });
+
+    const data = await req.promise();
     
+    return data.Item;
+}
+
+module.exports.exists = async function (id) {
+    const req = doc.get({
+        TableName: TABLE_NAME,
+        Key: {
+            Id: id
+        }
+    });
+
+    const data = await req.promise();
+
+    return data.Item != null;
 }
