@@ -1,7 +1,12 @@
-const asyncWrapper = (fn) => {
-    return (req, res, next) => {
-        Promise.resolve(fn(req, res, next)).catch(next);
-    };
-};
+function genId() {
+    // Randomly generates an 8-character string 
+    const alpha = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let s = '';
+    for (let _ = 0; _ < 8; _++) {
+        let i = Math.floor(Math.random() * alpha.length);
+        s += alpha[i];        
+    }
+    return s;
+}
 
-module.exports = asyncWrapper;
+module.exports.genId = genId;

@@ -1,0 +1,72 @@
+
+Requirements
+============
+Users should be able to make/list/view posts
+	- list posts by location (area/subArea)
+	- list posts by user
+Users should be able to comment on posts
+Users should have an "activity log" where they can 
+	- see who mentioned them in comments
+	- see when followed user makes a new post
+	- see when other users comment on their post
+Users should be able to follow other Users
+Users should be able to favorite posts
+Users should be able to search posts
+
+
+Access patterns
+===============
+List all posts sorted by date in a given location (area1)
+List all posts sorted by date in a given location (area2)
+List all posts for a user 
+
+
+Tables
+======
+SimbaMainTable
+	- PK: Id
+
+
+Indexes
+=======
+PostsByArea1Index
+	PK: Area1
+	SK: DatePosted
+
+PostsByUserIndex
+	PK: Id
+	SK: DatePosted
+
+
+Objects
+=======
+User {
+	Id: string
+	Email: string
+	Phone: string
+	Password: string
+	VerifiedPhone: boolean
+	LastLogin: string
+	CreatedDate: string
+	ProfileText: string
+	ProfilePhoto: string
+}
+
+
+Post {
+	Id: string
+	Area1: string
+	Area2: string
+	Username: string
+	DatePosted: string
+	Photos: list
+	PostText:string
+	Comments: list of comments
+}
+
+Comment {
+	
+}
+
+
+

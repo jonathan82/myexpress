@@ -10,7 +10,8 @@ module.exports.create = async function (user) {
         Email: user.email,
         HashedPwd: hashedPwd,
         Phone: user.phone,
-        VerifiedPhone: false
+        VerifiedPhone: false,
+        JoinDate: new Date().toISOString()
     });
 }
 

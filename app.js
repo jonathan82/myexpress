@@ -7,6 +7,7 @@ const passport = require('passport');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var protectedRouter = require('./routes/protected');
+var postsRouter = require('./routes/posts');
 
 var app = express();
 
@@ -22,5 +23,6 @@ require('./passport');
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/protected', protectedRouter);
+app.use('/posts', postsRouter);
 
 module.exports = app;

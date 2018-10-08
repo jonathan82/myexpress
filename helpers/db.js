@@ -9,11 +9,12 @@ AWS.config.update({
 
 const doc = new AWS.DynamoDB.DocumentClient();
 
-const TABLE_NAME = "SimbaMainTable";
+const MAIN_TABLE = "SimbaMainTable";
+const PAGE_SIZE = 10;
 
 module.exports.create = async function (item) {
     const req = doc.put({
-        TableName: TABLE_NAME,
+        TableName: MAIN_TABLE,
         Item: item,
         ConditionExpression: 'attribute_not_exists(Id)'
     });
@@ -23,7 +24,7 @@ module.exports.create = async function (item) {
 
 module.exports.findById = async function(id) {
     const req = doc.get({
-        TableName: TABLE_NAME,
+        TableName: MAIN_TABLE,
         Key: {
             Id: id
         }
@@ -36,7 +37,7 @@ module.exports.findById = async function(id) {
 
 module.exports.queryIndex = async function(key,value,indexName) {
     const req = doc.query({
-        TableName: TABLE_NAME,
+        TableName: MAIN_TABLE,
         IndexName: indexName,
         KeyConditionExpression: `${key} = :hkey`,
         ExpressionAttributeValues: {
@@ -50,9 +51,32 @@ module.exports.queryIndex = async function(key,value,indexName) {
     return data.Items ? data.Items[0] : null;
 }
 
+module.exports.queryPaged = async function(key, value, indexName, lastSeen) {
+    const req = doc.query({
+        TableName: MAIN_TABLE,
+        IndexName: indexName,
+        KeyConditionExpression: `${key} = :keyVal`,
+        FilterExpression: 'Area2 = :area2Val',
+        ExpressionAttributeValues: {
+            ':keyVal': value,
+            ':area2Val': ''
+        },
+        Limit: PAGE_SIZE,
+        ExclusiveStartKey: lastSeen,
+        ScanIndexForward: false //most recent date first
+    });
+
+    const data = await req.promise();
+    
+    return {
+        items: data.Items,
+        lastSeen: data.LastEvaluatedKey
+    }    
+}
+
 module.exports.exists = async function (id) {
     const req = doc.get({
-        TableName: TABLE_NAME,
+        TableName: MAIN_TABLE,
         Key: {
             Id: id
         }
