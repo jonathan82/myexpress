@@ -40,7 +40,7 @@ module.exports.queryIndex = async function(key,value,indexName) {
         IndexName: indexName,
         KeyConditionExpression: `${key} = :hkey`,
         ExpressionAttributeValues: {
-            'hkey': value
+            ':hkey': value
         },
         Limit: 1
     });

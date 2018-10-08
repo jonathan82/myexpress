@@ -43,9 +43,11 @@ router.get('/authenticate', wrapAsync(async function(req, res, next) {
   const usernameOrEmail = req.query.usernameOrEmail;
   const password = req.query.password;
 
-  if(await user.authenticate(usernameOrEmail, password)) {
-    const token = jwt.sign({
+  const id = await user.authenticate(usernameOrEmail, password);
 
+  if(id) {
+    const token = jwt.sign({
+      Id: id
     }, config.jwtSecretKey);
     res.send(token);
     return;

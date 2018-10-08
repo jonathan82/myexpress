@@ -21,15 +21,16 @@ module.exports.authenticate = async function(usernameOrEmail, password) {
 
     if(usernameOrEmail.indexOf('@') != -1) {
         // lookup by email
-        u = await db.queryIndex('Email', usernameOrEmail, 'EmailIndex');
+        const em = await db.queryIndex('Email', usernameOrEmail, 'EmailIndex');
+        u = em ? await db.findById(em.Id) : null;
     } else {
         // lookup by username
         u = await db.findById(usernameOrEmail);
     }
 
     if (u && u.HashedPwd==hashedPwd) {
-        return true;
+        return u.Id;
     }
 
-    return false;
+    return null;
 }
