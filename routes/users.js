@@ -40,11 +40,13 @@ router.post('/', wrapAsync(async function(req, res, next) {
 
 /************** Authenticate user ***************/
 router.get('/authenticate', wrapAsync(async function(req, res, next) {
-  const username = req.query.username;
+  const usernameOrEmail = req.query.usernameOrEmail;
   const password = req.query.password;
 
-  if(await user.authenticate(username, password)) {
-    const token = jwt.sign({}, config.jwtSecretKey);
+  if(await user.authenticate(usernameOrEmail, password)) {
+    const token = jwt.sign({
+
+    }, config.jwtSecretKey);
     res.send(token);
     return;
   }

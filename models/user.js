@@ -14,10 +14,18 @@ module.exports.create = async function (user) {
     });
 }
 
-module.exports.authenticate = async function(username,password) {
+module.exports.authenticate = async function(usernameOrEmail, password) {
     const hashedPwd = crypto.createHash('sha256').update(password).digest('hex');
 
-    const u = await db.get(username);
+    let u;
+
+    if(usernameOrEmail.indexOf('@') != -1) {
+        // lookup by email
+        u = await db.queryIndex('Email', usernameOrEmail, 'EmailIndex');
+    } else {
+        // lookup by username
+        u = await db.findById(usernameOrEmail);
+    }
 
     if (u && u.HashedPwd==hashedPwd) {
         return true;

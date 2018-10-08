@@ -21,7 +21,7 @@ module.exports.create = async function (item) {
     await req.promise();
 }
 
-module.exports.get = async function(id) {
+module.exports.findById = async function(id) {
     const req = doc.get({
         TableName: TABLE_NAME,
         Key: {
@@ -32,6 +32,22 @@ module.exports.get = async function(id) {
     const data = await req.promise();
     
     return data.Item;
+}
+
+module.exports.queryIndex = async function(key,value,indexName) {
+    const req = doc.query({
+        TableName: TABLE_NAME,
+        IndexName: indexName,
+        KeyConditionExpression: `${key} = :hkey`,
+        ExpressionAttributeValues: {
+            'hkey': value
+        },
+        Limit: 1
+    });
+
+    const data = await req.promise();
+
+    return data.Items ? data.Items[0] : null;
 }
 
 module.exports.exists = async function (id) {
