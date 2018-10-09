@@ -34,7 +34,7 @@ PostsByArea1Index
 	SK: DatePosted
 
 PostsByUserIndex
-	PK: Id
+	PK: Username
 	SK: DatePosted
 
 

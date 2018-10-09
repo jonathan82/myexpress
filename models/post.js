@@ -28,4 +28,4 @@ async function create(area, subArea, username, postText) {
 exports.postsByArea = postsByArea;
 exports.postsBySubArea = postsBySubArea;
 exports.postsByUser = postsByUser;
-
+exports.create = create;

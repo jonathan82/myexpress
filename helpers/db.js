@@ -4,7 +4,8 @@ const config = require('../config');
 AWS.config.update({
     region: config.awsRegion,
     accessKeyId: config.awsAccessKey,
-    secretAccessKey: config.awsSecretKey
+    secretAccessKey: config.awsSecretKey,
+    sslEnabled: false
 });
 
 const doc = new AWS.DynamoDB.DocumentClient();
