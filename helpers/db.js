@@ -53,14 +53,14 @@ module.exports.queryIndex = async function(key,value,indexName) {
 }
 
 module.exports.queryPaged = async function(key, value, indexName, lastSeen) {
+
     const req = doc.query({
         TableName: MAIN_TABLE,
         IndexName: indexName,
         KeyConditionExpression: `${key} = :keyVal`,
-        FilterExpression: 'Area2 = :area2Val',
+        //FilterExpression: 'Area2 = :area2Val',
         ExpressionAttributeValues: {
-            ':keyVal': value,
-            ':area2Val': ''
+            ':keyVal': value
         },
         Limit: PAGE_SIZE,
         ExclusiveStartKey: lastSeen,

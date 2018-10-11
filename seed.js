@@ -27,7 +27,7 @@ async function main() {
             const username = `test_${randInt(1,NUM_OF_USERS+1)}`;
             const area = locs[randInt(0,locs.length)].id;
 
-            await postDb.create(area, '', username, 'this is a test post');    
+            await postDb.create(area, area, username, 'this is a test post');    
         }
     } catch (error) {
         console.log(error);
